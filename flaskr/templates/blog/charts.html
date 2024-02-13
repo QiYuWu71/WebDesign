@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}{% endblock %}</h1>
+{% endblock %}
+<br>
+<br>
+<br>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+{% block content %}
+
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-5">
+  <div class="card text-white bg-dark mb-3" style="max-width: 24rem;">
+    <div class="card-header">Welcome to see Advanced features</div>
+    <div class="card-body">
+    <h5 class="card-title">Please select a stock:</h5>
+    
+    <form method="post">
+    <select class="custom-select" name="stock_selection" id="stock_selection"  value="{{ request.form['stock_selection'] }}"   required >
+      <option value="">--STOCK SELECTION--</option>
+      <tbody>
+        {% for stock in stock_symbol_list %}
+        <tr>
+        <option value="{{ stock }}" label="{{ stock }}">{{ stock }}</option>
+        </tr>
+        {% if not loop.last %}
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </select>
+    <br>
+    <br>
+    <div class="btn-group-vertical" role="group" aria-label="Basic example" >
+      <button type="submit" class="btn btn-light">Confirm</button>
+    </div>
+  </form>
+    <br>
+    <br>
+    <p class="card-text"><a class="text-white bg-dark" href={{ url_for('index') }}>Back Home</a></li></p>
+    </div>
+  </div>
+</div>
+  <div class="col-7">
+    <div class="card text-white bg-dark mb-3" style="max-width: 36rem;" style="float: right">
+
+      <div class="card-body">
+      <p class="card-text"><a class="text-white bg-dark" href="#section1">  · Stock Price For 5 Years</a></li></p>
+      <p class="card-text"><a class="text-white bg-dark" href="#section2">  · Simple Return For 5 Years</a></li></p>
+      <p class="card-text"><a class="text-white bg-dark" href="#section3">  · Today’s Return vs. Yesterday’s Return</a></li></p>
+      <p class="card-text"><a class="text-white bg-dark" href="#section4">  · Histogram of Simple Return</a></li></p>
+      <p class="card-text"><a class="text-white bg-dark" href="#section5">  · Stock and S&P 500 Cumulative Returns</a></li></p>
+      <p class="card-text"><a class="text-white bg-dark" href="#section6">  · Daily Percentage Change in Price for Stock and SPX</a></li></p>
+      <p class="card-text"><a class="text-white bg-dark" href="#section7">  · Scatter graph of Stock Return vs. Market Return</a></li></p>
+      </div>
+  </div>
+  </div>
+  </div>
+</div>
+
+
+
+
+<body>
+  <section id="section1">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div id='chart3' class='chart'></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="section2">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div id='chart4' class='chart'></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="section3">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div id='chart5' class='chart'></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="section4">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div id='chart6' class='chart'></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="section5">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div id='chart7' class='chart'></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="section6">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div id='chart8' class='chart'></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="section7">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div id='chart9' class='chart'></div>
+      </div>
+    </div>
+  </div>
+
+  
+</section>
+
+  </body>
+  
+  <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+  <script type='text/javascript'>
+  var graphs3 = {{graphJSON3 | safe}};
+  Plotly.plot('chart3',graphs3,{});
+  var graphs4 = {{graphJSON4 | safe}};
+  Plotly.plot('chart4',graphs4,{});
+  var graphs5 = {{graphJSON5 | safe}};
+  Plotly.plot('chart5',graphs5,{});
+  var graphs6 = {{graphJSON6 | safe}};
+  Plotly.plot('chart6',graphs6,{});
+  var graphs7 = {{graphJSON7 | safe}};
+  Plotly.plot('chart7',graphs7,{});
+  var graphs8 = {{graphJSON8 | safe}};
+  Plotly.plot('chart8',graphs8,{});
+  var graphs9 = {{graphJSON9 | safe}};
+  Plotly.plot('chart9',graphs9,{});
+  </script>
+{% endblock %}

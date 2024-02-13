@@ -1,0 +1,7 @@
+flask==2.2.2
+python-dateutil
+requests
+pandas==1.5.3
+numpy
+plotly
+statsmodels

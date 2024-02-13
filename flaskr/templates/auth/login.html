@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}{% endblock %}</h1>
+  <br>
+  <br>
+{% endblock %}
+
+{% block content %}
+  <div style="display: flex; justify-content: center;">
+    <div style="width: 400px;">
+  <div class="card" style="width: 26rem;">
+    <div class="card-body">
+      <h5 class="card-title">Log In</h5>
+    <form method="post" class="px-4 py-3">
+        <div class="form-group">
+          <label for="username">  Username</label>
+          <div class="col-16 my-2" >
+            <div style="text-align: center;">
+          <input name="username" id="username" type="username" class="form-control" placeholder="input your username" width="100px"required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="col-16 my-2" >
+            <div style="text-align: center;">
+          <input type="password" name="password" id="password" class="form-control" placeholder="Input your Password" required>
+          </div>
+        </div>
+        {% block messages %}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Attention!</strong> {{ message }}
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      {% endblock %}
+        <div style="text-align: center;">
+        <button type="submit" class="btn btn-primary bg-dark">Log In</button>
+        </div>
+    </form>
+  
+  </div>
+  </div>
+  </div>
+  </div>
+{% endblock %}

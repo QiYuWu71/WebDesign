@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <br>
+  <br>
+  <br>
+  
+{% endblock %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-4">
+<div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+  {% if g.user %}
+  <div class="card-header">Welcome, {{g.user['username']}}</div>
+  <div class="card-body">
+    <h5 class="card-title">Balance:</h5>
+    <p class="card-text">$ {{g.user['balance']}}</p>
+    <br>
+    
+    <div class="btn-group-vertical" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-link">
+        <a class="text-white bg-dark" href="{{ url_for('blog.create') }}">Buy/Sell Stock</a>
+      </button>
+      <button type="button" class="btn btn-link">
+        <a class="text-white bg-dark" href="{{ url_for('blog.charts') }}">See Advanced Feature</a>
+      </button>
+    </div>
+  </div>
+  {% endif %}
+  </div>
+</div>
+  <div class="col-8">
+    <h5 class="card-title">Stock Account</h5>
+    <div style="height: 220px; overflow-y: auto; overflow-x:auto">
+      <table id="stockaccount" class="table table-striped" style="width:100%">
+          <thead>
+            <tr>
+                <th>Stock Symbol</th>
+                <th>Stock Name</th>
+                <th>Stock Shares</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for stock in stocks %}
+              <tr>
+                  <td>{{ stock['stock_symbol'] }}</td>
+                  <td>{{ stock['stock_name'] }}</td>
+                  <td>{{ stock['total_shares'] }}</td>
+              </tr>
+              {% if not loop.last %}
+              {% endif %}
+            {% endfor %}
+          </tbody>
+       </table>
+      </div>
+  </div>
+</div>
+</div>
+</br>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      
+          <div id='chart2' class='chart'></div>
+    </div>
+    <div class="col">
+      <div style="width= 600px;overflow-x: auto;">
+      <div id='chart' class='chart'></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-9" >
+      
+    <div id='chart3' class='chart'></div>
+    </div>
+    <div class="col-3 height=500px" >
+        <div class="card text-white bg-dark mb-3" style="max-width: 18rem" >
+        <div class="card-header">Portfolio Evaluation </div>
+        <div class="card-body">
+          <h6 class="card-title">Annualized Expected Return:</h6>
+          <p class="card-text">{{ frontier['Exp_return'].values[0] }}</p>
+          <br>
+          <h6 class="card-title">Annualized Volatility:</h6>
+          <p class="card-text">{{ frontier['Volatility'].values[0] }}</p>
+          <br>
+          <h6 class="card-title">Sharpe Ratio:</h6>
+          <p class="card-text">{{ frontier['Sharp'].values[0]}}</p>
+          <br>
+  
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+<br>
+<br>
+<div class="container">
+<h5 class="card-title">Stock tracks</h5>
+</div>
+<div class="container">
+  <div style="height: 300px; overflow-y: auto;">
+    
+<table id="track" class="table table-striped" style="width:100%">
+  <thead>
+    <tr>
+        <th>Stock Symbol</th>
+        <th>Buy/Sell Time</th>
+        <th>Buy/Sell</th>
+        <th>Num of Shares</th>
+        <th>Buy/Sell Price</th>
+        <th>Current Price</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for track in tracks %}
+    <tr>
+        <td>{{ track['stock_symbol'] }}</td>
+        <td>{{ track['date_time'] }}</td>
+        <td>{{ track['buy_or_sell']}}</td>
+        <td>{{ track['num_share'] }}</td>
+        <td>{{ track['track_price'] }}</td>
+        <td>{{ track['current_price'] }}</td>
+    </tr>
+    {% if not loop.last %}
+    {% endif %}
+  {% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script type='text/javascript'>
+var graphs = {{graphJSON | safe}};
+Plotly.plot('chart',graphs,{});
+var graphs2 = {{graphJSON2 | safe}};
+Plotly.plot('chart2',graphs2,{});
+var graphs3 = {{graphJSON3 | safe}};
+Plotly.plot('chart3',graphs3,{});
+</script>
+
+
+
+
+{% endblock %}

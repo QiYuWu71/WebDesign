@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}{% endblock %}</h1>
+{% endblock %}
+<br>
+<br>
+{% block content %}
+
+<br>
+  <div style="display: flex; justify-content: center;">
+    <div style="width: 500px;">
+  <div class="card" style="width: 35rem;">
+    <div class="card-body">
+      <h5 class="card-title">Make your Portfolio</h5>
+    <form method="post" class="px-4 py-3">
+        <div class="form-group">
+          <label for="stock_symbol">  Stock Symbol</label>
+          <div class="col-16 my-1" >
+            <div style="text-align: center;">
+          <input name="stock_symbol" id="stock_symbol" type="stock_symbol" class="form-control" placeholder="input Stock Symbol" width="100px" value="{{ request.form['stock_symbol'] }}" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="buy_or_sell">Choose An Action (Buy/Sell):</label>
+          <div class="col-16 my-1" >
+            <div style="text-align: center;">
+              <select class="custom-select" name="buy_or_sell" id="buy_or_sell" value="{{ request.form['buy_or_sell'] }}" required >
+                <option value="">--BUY/SELL--</option>
+                <option value="BUY" label="BUY">BUY</option>
+                <option value="SELL" label="SELL">SELL</option>
+              </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="num_share">Number of Shares</label>
+          <div class="col-16 my-2" >
+            <div style="text-align: center;">
+          <input type="num_share" name="num_share" id="num_share" class="form-control" placeholder="Input the number you want to Buy/Sell" value="{{ request.form['num_share'] }}" required>
+          </div>
+        </div>
+      </div>
+      {% block messages %}
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>Attention!</strong> {{ message }}
+        </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% endblock %}
+    <div class="container">
+      <div class="row">
+        <div class="col">
+        <div style="text-align: center;">
+          <button type="submit" class="btn text-white btn-dark">Save</button>
+        </div>
+      </div>
+      <div class="col" >
+        <div class="btn-group-vertical" role="group" aria-label="Basic example" >
+          <button type="submit" class="btn text-dark bg-light border-dark"><a class="text-dark" href={{ url_for('index') }}>Back Home</a></button>
+        </div>
+      </div>
+    </form>
+    
+  </div>
+  </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+{% endblock %}

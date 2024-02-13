@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% block header %}
+<br>
+<br>
+{% endblock %}
+
+{% block content %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-3">
+<div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+  {% if g.user %}
+  <div class="card-header">Total Evaluation</div>
+  <div class="card-body">
+    <h6 class="card-title">Annualized Expected Return:</h6>
+    <p class="card-text">{{ frontier['Exp_return'].values[0] }}</p>
+    <h6 class="card-title">Annualized Volatility:</h6>
+    <p class="card-text">{{ frontier['Volatility'].values[0] }}</p>
+    <h6 class="card-title">Sharpe Ratio:</h6>
+    <p class="card-text">{{ frontier['Sharp'].values[0] }}</p>
+    <br>
+    
+    <div class="btn-group-vertical" role="group" aria-label="Basic example">
+      <li>
+        <a class="text-white bg-dark" href="#section1">Account's Stocks Portfolio</a>
+      </li>
+      <li>
+        <a class="text-white bg-dark" href="#section2">Current day's Stock Track</a>
+      
+    </li>
+    </div>
+  </div>
+  {% endif %}
+  </div>
+</div>
+  <div class="col-9">
+    <div id="index_plot" style="width:800px;height:400px;"></div>
+    <script src="https://cdn.plot.ly/plotly-2.18.0.min.js"></script>
+      <script type='text/javascript'>
+          var data = [{x:{{spy_df['date_time']|tojson}},y:{{spy_df['index_value']|tojson}},
+            type: 'scatter'}];
+          var layout = {
+            title: 'SPY Index Value'
+          };
+          Plotly.newPlot('index_plot',data,layout);
+      </script>
+   </div>
+  </div>
+</div>
+
+<section id="section1">
+<div class="container">
+  <h5 class="card-title">Account's Stocks Portfolio</h5>
+  <div style="height: 350px; overflow-y: auto;">
+    
+<table id="stockaccount" class="table table-striped" style="width:100%">
+  <thead>
+    <tr>
+        <th>User ID</th>
+        <th>User Name</th>
+        <th>Stock Symbol</th>
+        <th>Stock Name</th>
+        <th>Stock Shares</th>
+        <th>Current Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for stock in stocks %}
+    <tr>
+        <td>{{ stock['id'] }}</td>
+        <td>{{ stock['username'] }}</td>
+        <td>{{ stock['stock_symbol'] }}</td>
+        <td>{{ stock['stock_name'] }}</td>
+        <td>{{ stock['shares'] }}</td>
+        <td>{{ stock['curr_price'] }}</td>
+    </tr>
+    {% if not loop.last %}
+    {% endif %}
+  {% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<br>
+<br>
+<section id="section2">
+<div class="container">
+  <h5 class="card-title">Current day's Stock Track</h5>
+  <div style="height: 350px; overflow-y: auto;">
+<table id="track" class="table table-striped" style="width:100%">
+  <thead>
+    <tr>
+        <th>User ID</th>
+        <th>User Name</th>
+        <th>Stock Symbol</th>
+        <th>Stock Name</th>
+        <th>Buy/Sell Time</th>
+        <th>Buy/Sell</th>
+        <th>Num of Shares</th>
+        <th>Buy/Sell Price</th>
+        <th>Current Price</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for track in tracks %}
+    <tr>
+        <td>{{ track['author_id'] }}</td>
+        <td>{{ track['username'] }}</td>
+        <td>{{ track['stock_symbol'] }}</td>
+        <td>{{ track['stock_name'] }}</td>
+        <td>{{ track['date_time'] }}</td>
+        <td>{{ track['buy_or_sell']}}</td>
+        <td>{{ track['num_share'] }}</td>
+        <td>{{ track['track_price'] }}</td>
+        <td>{{ track['current_price'] }}</td>
+    </tr>
+    {% if not loop.last %}
+    {% endif %}
+  {% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+</section>
+
+
+{% endblock %}
